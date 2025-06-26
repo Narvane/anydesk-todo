@@ -21,6 +21,13 @@ public class Task {
         this.status = status;
     }
 
+    public Task(Long persistenceId, String title, String description, TaskStatus status) {
+        this.persistenceId = persistenceId;
+        this.title = title;
+        this.description = description;
+        this.status = status;
+    }
+
     public void toggleStatus() {
         if (status == TODO) {
             this.status = COMPLETED;
