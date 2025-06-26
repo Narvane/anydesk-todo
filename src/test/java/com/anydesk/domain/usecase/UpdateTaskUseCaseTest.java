@@ -29,7 +29,7 @@ class UpdateTaskUseCaseTest {
     @Test
     void shouldUpdateTaskSuccessfully() {
         Long taskId = 1L;
-        Request request = new Request(taskId, "New title", "New desc");
+        Request request = new Request("New title", "New desc");
         Task task = mock(Task.class);
 
         when(taskRepository.findById(taskId)).thenReturn(Optional.of(task));
@@ -40,7 +40,7 @@ class UpdateTaskUseCaseTest {
         when(task.getDescription()).thenReturn("New desc");
         when(task.getStatus()).thenReturn(TaskStatus.TODO);
 
-        Response response = useCase.exec(request);
+        Response response = useCase.exec(taskId, request);
 
         verify(task).setTitle("New title");
         verify(task).setDescription("New desc");
@@ -55,11 +55,11 @@ class UpdateTaskUseCaseTest {
     @Test
     void shouldThrowWhenTaskNotFound() {
         Long taskId = 99L;
-        Request request = new Request(taskId, "Title", "Desc");
+        Request request = new Request("Title", "Desc");
 
         when(taskRepository.findById(taskId)).thenReturn(Optional.empty());
 
-        assertThrows(TaskNotFoundException.class, () -> useCase.exec(request));
+        assertThrows(TaskNotFoundException.class, () -> useCase.exec(taskId, request));
     }
 
 }
