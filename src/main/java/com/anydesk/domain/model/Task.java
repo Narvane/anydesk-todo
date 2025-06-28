@@ -18,14 +18,14 @@ public class Task {
     public Task(String title, String description, TaskStatus status) {
         this.title = title;
         this.description = description;
-        this.status = status;
+        this.status = status != null ? status : TODO;
     }
 
     public Task(Long persistenceId, String title, String description, TaskStatus status) {
         this.persistenceId = persistenceId;
         this.title = title;
         this.description = description;
-        this.status = status;
+        this.status = status != null ? status : TODO;
     }
 
     public void toggleStatus() {
@@ -63,4 +63,7 @@ public class Task {
         return status;
     }
 
+    public void setStatus(TaskStatus status) {
+        this.status = status;
+    }
 }
