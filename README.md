@@ -1,57 +1,57 @@
 # Task Management API
 
-## 🔧 Como rodar
+## 🔧 How to Run
 
 ```bash
-git clone https://github.com/seu-usuario/task-management-api.git
+git clone https://github.com/your-username/task-management-api.git
 cd task-management-api
 mvn quarkus:dev
 ```
 
-## 📑 Documentação
+## 📑 Documentation
 
 - **Swagger (OpenAPI):** [http://localhost:8080/q/openapi](http://localhost:8080/q/openapi)
-- **Dev UI Quarkus:** [http://localhost:8080/q/dev](http://localhost:8080/q/dev)
+- **Quarkus Dev UI:** [http://localhost:8080/q/dev](http://localhost:8080/q/dev)
 
-> Os endpoints estão protegidos com **HTTP Basic Authentication**.  
-> Use o botão de **cadeado no Swagger** para autenticar.  
-> **Usuário:** `admin`  
-> **Senha:** `123`
+> All endpoints are protected with **HTTP Basic Authentication**.  
+> Use the **lock icon in Swagger** to authenticate.  
+> **Username:** `admin`  
+> **Password:** `123`
 
 ---
 
-## 🧠 Estrutura do Projeto
+## 🧠 Project Structure
 
-O projeto foi dividido em três camadas principais:
+The project is divided into three main layers:
 
 ### `domain`
-Contém os modelos, exceções e **use cases**, representando a lógica de negócio da aplicação.  
-Essa camada utiliza apenas dependências essenciais como **injeção de componentes** e **validações de bean**, mantendo-se livre de detalhes de infraestrutura.
+Contains models, exceptions, and **use cases**, representing the business logic of the application.  
+This layer only uses essential dependencies such as **component injection** and **bean validations**, staying free from infrastructure concerns.
 
 ### `app`
-Camada responsável por expor os **endpoints REST**, controlar requisições e tratar exceções. Serve como **interface externa da aplicação**, sendo a porta de entrada para o domínio.
+This layer is responsible for exposing the **REST endpoints**, handling requests, and managing exceptions. It acts as the **entry point** into the domain layer.
 
 ### `persistence`
-Contém os **DAOs**, responsáveis exclusivamente por mapear e transitar dados entre o banco e o domínio, mantendo o domínio isolado da persistência.
+Holds the **DAOs**, which are solely responsible for mapping and transferring data between the database and the domain, keeping the domain decoupled from persistence logic.
 
 ---
 
-## 🧱 Arquitetura
+## 🧱 Architecture
 
-A estrutura segue princípios da **Clean Architecture** e do **Domain-Driven Design (DDD)**.
+The structure follows **Clean Architecture** and **Domain-Driven Design (DDD)** principles.
 
-Essa separação por camadas foi adotada por escolha pessoal para demonstrar clareza, testabilidade e domínio conceitual.  
-Em um projeto real e menor, possivelmente seria adotada uma abordagem mais direta, como:
+This separation was chosen to demonstrate clarity, testability, and architectural knowledge.  
+In a smaller real-world project, a more straightforward approach could be used, such as:
 
-- Uso direto do JPA nos modelos
-- Substituição dos use cases por services
+- Using JPA directly in the models
+- Replacing use cases with simple services
 
 ---
 
-## ✅ Testes
+## ✅ Testing
 
-Foram implementados **testes unitários** para:
+Unit tests were implemented for:
 
-- **UseCases** (regras de negócio)
+- **UseCases** (business logic)
 - **Resources** (endpoints)
-- **Repositories** (persistência)
+- **Repositories** (persistence layer)
