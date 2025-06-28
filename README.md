@@ -10,8 +10,8 @@ mvn quarkus:dev
 
 ## 📑 Documentation
 
-- **Swagger (OpenAPI):** [http://localhost:8080/q/openapi](http://localhost:8080/q/openapi)
-- **Quarkus Dev UI:** [http://localhost:8080/q/dev](http://localhost:8080/q/dev)
+- **Swagger (OpenAPI):** [http://localhost:8080/q/swagger-ui](http://localhost:8080/q/swagger-ui)
+- **Quarkus Dev UI:** [http://localhost:8080/q/dev-ui](http://localhost:8080/q/dev-ui)
 
 > All endpoints are protected with **HTTP Basic Authentication**.  
 > Use the **lock icon in Swagger** to authenticate.  
