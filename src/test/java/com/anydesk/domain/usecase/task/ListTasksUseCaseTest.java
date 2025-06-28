@@ -1,9 +1,9 @@
-package com.anydesk.domain.usecase;
+package com.anydesk.domain.usecase.task;
 
 import com.anydesk.domain.model.Task;
 import com.anydesk.domain.model.TaskStatus;
 import com.anydesk.domain.repository.TaskRepository;
-import com.anydesk.domain.usecase.ListTasksUseCase.Response;
+import com.anydesk.domain.usecase.task.ListTasksUseCase.Response;
 import com.anydesk.domain.util.Page;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static com.anydesk.domain.model.TaskStatus.COMPLETED;
+import static com.anydesk.domain.model.TaskStatus.TODO;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -35,7 +37,7 @@ class ListTasksUseCaseTest {
 
         when(task1.getTitle()).thenReturn("Task 1");
         when(task1.getDescription()).thenReturn("Desc 1");
-        when(task1.getStatus()).thenReturn(TaskStatus.TODO);
+        when(task1.getStatus()).thenReturn(TODO);
 
         when(task2.getTitle()).thenReturn("Task 2");
         when(task2.getDescription()).thenReturn("Desc 2");
@@ -54,12 +56,12 @@ class ListTasksUseCaseTest {
         Response r1 = result.content().getFirst();
         assertEquals("Task 1", r1.title());
         assertEquals("Desc 1", r1.description());
-        assertEquals("To do", r1.status());
+        assertEquals(TODO, r1.status());
 
         Response r2 = result.content().get(1);
         assertEquals("Task 2", r2.title());
         assertEquals("Desc 2", r2.description());
-        assertEquals("Completed", r2.status());
+        assertEquals(COMPLETED, r2.status());
 
         verify(taskRepository).findAll(page, size);
     }
@@ -74,21 +76,21 @@ class ListTasksUseCaseTest {
 
         when(task.getTitle()).thenReturn("Only Task");
         when(task.getDescription()).thenReturn("Filtered Desc");
-        when(task.getStatus()).thenReturn(TaskStatus.TODO);
+        when(task.getStatus()).thenReturn(COMPLETED);
 
         Page<Task> mockPage = new Page<>(List.of(task), page, size, totalElements);
-        when(taskRepository.findAll(page, size)).thenReturn(mockPage);
+        when(taskRepository.findAll(COMPLETED, page, size)).thenReturn(mockPage);
 
-        Page<Response> result = useCase.execute(TaskStatus.TODO, page, size);
+        Page<Response> result = useCase.execute(COMPLETED, page, size);
 
         assertEquals(1, result.content().size());
 
         Response r = result.content().getFirst();
         assertEquals("Only Task", r.title());
         assertEquals("Filtered Desc", r.description());
-        assertEquals("To do", r.status());
+        assertEquals(COMPLETED, r.status());
 
-        verify(taskRepository).findAll(page, size);
+        verify(taskRepository).findAll(COMPLETED, page, size);
     }
 
 }
