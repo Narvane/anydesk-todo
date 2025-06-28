@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: AnyDesk API
+  title: Task Management API
   version: 1.0.0
   description: API for user and task operations
 
