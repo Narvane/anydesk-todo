@@ -1,26 +1,24 @@
-package com.anydesk.domain.usecase;
+package com.anydesk.domain.usecase.task;
 
 import com.anydesk.domain.exception.TaskNotFoundException;
-import com.anydesk.domain.model.Task;
 import com.anydesk.domain.repository.TaskRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 @ApplicationScoped
-public class ToggleTaskStatusUseCase {
+public class DeleteTaskUseCase {
 
     @Inject
     TaskRepository taskRepository;
 
     public Response exec(Long persistenceId) {
         return taskRepository.findById(persistenceId).map(task -> {
-            task.toggleStatus();
+            taskRepository.deleteById(task.getPersistenceId());
 
-            Task savedTask = taskRepository.save(task);
-            return new Response(savedTask.getPersistenceId(), savedTask.getStatus().getText());
+            return new Response(task.getPersistenceId(), task.getTitle());
         }).orElseThrow(() -> new TaskNotFoundException(persistenceId));
     }
 
-    public record Response(Long id, String status) {}
+    public record Response(Long id, String title) {}
 
 }

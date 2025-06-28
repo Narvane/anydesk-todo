@@ -1,4 +1,4 @@
-package com.anydesk.domain.usecase;
+package com.anydesk.domain.usecase.task;
 
 import com.anydesk.domain.repository.TaskRepository;
 import com.anydesk.domain.exception.TaskNotFoundException;

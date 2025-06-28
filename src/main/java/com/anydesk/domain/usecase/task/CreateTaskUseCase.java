@@ -1,4 +1,4 @@
-package com.anydesk.domain.usecase;
+package com.anydesk.domain.usecase.task;
 
 import com.anydesk.domain.model.Task;
 import com.anydesk.domain.model.TaskStatus;
@@ -20,11 +20,11 @@ public class CreateTaskUseCase {
                 savedTask.getPersistenceId(),
                 savedTask.getTitle(),
                 savedTask.getDescription(),
-                savedTask.getStatus().getText()
+                savedTask.getStatus()
         );
     }
 
     public record Request(String title, String description, TaskStatus status) {}
-    public record Response(Long id, String title, String description, String status) {}
+    public record Response(Long id, String title, String description, TaskStatus status) {}
 
 }
