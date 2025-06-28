@@ -1,15 +1,19 @@
 package com.anydesk.app.resource;
 
-import com.anydesk.app.resource.doc.TaskResourceDoc;
-import com.anydesk.domain.usecase.*;
-import com.anydesk.domain.util.Page;
+import com.anydesk.domain.usecase.task.*;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 import static com.anydesk.domain.model.TaskStatus.COMPLETED;
 
 @Path("/tasks")
-public class TaskResource implements TaskResourceDoc {
+@RolesAllowed("USER")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+public class TaskResource {
 
     @Inject
     ListTasksUseCase listTasksUseCase;
@@ -23,37 +27,51 @@ public class TaskResource implements TaskResourceDoc {
     ToggleTaskStatusUseCase toggleTaskStatusUseCase;
 
     @GET
-    public Page<ListTasksUseCase.Response> listAll(int page, int pageSize) {
-        return listTasksUseCase.execute(page, pageSize);
+    public Response listAll(@QueryParam("page") int page, @QueryParam("pageSize") int pageSize) {
+        var tasks =  listTasksUseCase.execute(page, pageSize);
+
+        if (tasks.isEmpty()) {
+            return Response.noContent().build();
+        }
+        return Response.status(Response.Status.OK).entity(tasks).build();
     }
 
     @GET
     @Path("/completed")
-    public Page<ListTasksUseCase.Response> listCompleted(int page, int pageSize) {
-        return listTasksUseCase.execute(COMPLETED, page, pageSize);
+    public Response listCompleted(@QueryParam("page") int page, @QueryParam("pageSize") int pageSize) {
+        var tasks = listTasksUseCase.execute(COMPLETED, page, pageSize);
+
+        if (tasks.isEmpty()) {
+            return Response.noContent().build();
+        }
+        return Response.status(Response.Status.OK).entity(tasks).build();
     }
 
     @POST
-    public CreateTaskUseCase.Response create(CreateTaskUseCase.Request request) {
-        return createTaskUseCase.exec(request);
+    public Response create(CreateTaskUseCase.Request request) {
+        var task = createTaskUseCase.exec(request);
+        return Response.status(Response.Status.CREATED).entity(task).build();
     }
 
     @PUT
     @Path("/{id}")
-    public UpdateTaskUseCase.Response update(@PathParam("id") Long id, UpdateTaskUseCase.Request request) {
-        return updateTaskUseCase.exec(id, request);
+    public Response update(@PathParam("id") Long id, UpdateTaskUseCase.Request request) {
+        var task = updateTaskUseCase.exec(id, request);
+        return Response.status(Response.Status.OK).entity(task).build();
     }
 
     @DELETE
     @Path("/{id}")
-    public DeleteTaskUseCase.Response delete(@PathParam("id") Long id) {
-        return deleteTaskUseCase.exec(id);
+    public Response delete(@PathParam("id") Long id) {
+        var task = deleteTaskUseCase.exec(id);
+        return Response.status(Response.Status.OK).entity(task).build();
     }
 
     @GET
     @Path("/{id}/toggle-status")
-    public ToggleTaskStatusUseCase.Response toggleStatus(@PathParam("id") Long id) {
-        return toggleTaskStatusUseCase.exec(id);
+    public Response toggleStatus(@PathParam("id") Long id) {
+        var task = toggleTaskStatusUseCase.exec(id);
+        return Response.status(Response.Status.OK).entity(task).build();
     }
 
 }
