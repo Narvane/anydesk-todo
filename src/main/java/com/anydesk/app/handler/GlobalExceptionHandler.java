@@ -3,12 +3,15 @@ package com.anydesk.app.handler;
 import com.anydesk.app.vo.ErrorResponse;
 import com.anydesk.domain.exception.TaskNotFoundException;
 import jakarta.validation.ConstraintViolationException;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
 import org.jboss.logging.Logger;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Provider
@@ -18,11 +21,17 @@ public class GlobalExceptionHandler {
 
     @Provider
     public static class TaskNotFoundHandler implements ExceptionMapper<TaskNotFoundException> {
+
+        @Context
+        HttpHeaders headers;
+
         @Override
         public Response toResponse(TaskNotFoundException ex) {
+            Locale locale = headers.getAcceptableLanguages().stream().findFirst().orElse(Locale.ENGLISH);
+
             LOGGER.warn("Task not found: " + ex.getMessage(), ex);
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity(new ErrorResponse(ex.getMessage()))
+                    .entity(new ErrorResponse(ex.getMessage(), locale, ex.getParams()))
                     .build();
         }
     }
