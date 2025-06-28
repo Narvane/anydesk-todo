@@ -5,6 +5,8 @@ import com.anydesk.domain.model.TaskStatus;
 import com.anydesk.domain.repository.TaskRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @ApplicationScoped
 public class CreateTaskUseCase {
@@ -24,7 +26,16 @@ public class CreateTaskUseCase {
         );
     }
 
-    public record Request(String title, String description, TaskStatus status) {}
+    public record Request(
+            @NotBlank(message = "{validation.title.not.blank}")
+            @Size(max = 255, message = "{validation.title.size}")
+            String title,
+
+            @Size(max = 500, message = "{validation.description.size}")
+            String description,
+
+            TaskStatus status
+    ) {}
     public record Response(Long id, String title, String description, TaskStatus status) {}
 
 }

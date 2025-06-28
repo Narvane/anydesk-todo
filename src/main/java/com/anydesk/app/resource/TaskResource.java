@@ -3,6 +3,7 @@ package com.anydesk.app.resource;
 import com.anydesk.domain.usecase.task.*;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -48,14 +49,14 @@ public class TaskResource {
     }
 
     @POST
-    public Response create(CreateTaskUseCase.Request request) {
+    public Response create(@Valid CreateTaskUseCase.Request request) {
         var task = createTaskUseCase.exec(request);
         return Response.status(Response.Status.CREATED).entity(task).build();
     }
 
     @PUT
     @Path("/{id}")
-    public Response update(@PathParam("id") Long id, UpdateTaskUseCase.Request request) {
+    public Response update(@PathParam("id") Long id, @Valid UpdateTaskUseCase.Request request) {
         var task = updateTaskUseCase.exec(id, request);
         return Response.status(Response.Status.OK).entity(task).build();
     }
