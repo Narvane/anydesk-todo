@@ -1,62 +1,57 @@
-# todo
+# Task Management API
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+## 🔧 Como rodar
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
-
-## Running the application in dev mode
-
-You can run your application in dev mode that enables live coding using:
-
-```shell script
-./mvnw quarkus:dev
+```bash
+git clone https://github.com/seu-usuario/task-management-api.git
+cd task-management-api
+mvn quarkus:dev
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
+## 📑 Documentação
 
-## Packaging and running the application
+- **Swagger (OpenAPI):** [http://localhost:8080/q/openapi](http://localhost:8080/q/openapi)
+- **Dev UI Quarkus:** [http://localhost:8080/q/dev](http://localhost:8080/q/dev)
 
-The application can be packaged using:
+> Os endpoints estão protegidos com **HTTP Basic Authentication**.  
+> Use o botão de **cadeado no Swagger** para autenticar.  
+> **Usuário:** `admin`  
+> **Senha:** `123`
 
-```shell script
-./mvnw package
-```
+---
 
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
+## 🧠 Estrutura do Projeto
 
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
+O projeto foi dividido em três camadas principais:
 
-If you want to build an _über-jar_, execute the following command:
+### `domain`
+Contém os modelos, exceções e **use cases**, representando a lógica de negócio da aplicação.  
+Essa camada utiliza apenas dependências essenciais como **injeção de componentes** e **validações de bean**, mantendo-se livre de detalhes de infraestrutura.
 
-```shell script
-./mvnw package -Dquarkus.package.jar.type=uber-jar
-```
+### `app`
+Camada responsável por expor os **endpoints REST**, controlar requisições e tratar exceções. Serve como **interface externa da aplicação**, sendo a porta de entrada para o domínio.
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
+### `persistence`
+Contém os **DAOs**, responsáveis exclusivamente por mapear e transitar dados entre o banco e o domínio, mantendo o domínio isolado da persistência.
 
-## Creating a native executable
+---
 
-You can create a native executable using:
+## 🧱 Arquitetura
 
-```shell script
-./mvnw package -Dnative
-```
+A estrutura segue princípios da **Clean Architecture** e do **Domain-Driven Design (DDD)**.
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
+Essa separação por camadas foi adotada por escolha pessoal para demonstrar clareza, testabilidade e domínio conceitual.  
+Em um projeto real e menor, possivelmente seria adotada uma abordagem mais direta, como:
 
-```shell script
-./mvnw package -Dnative -Dquarkus.native.container-build=true
-```
+- Uso direto do JPA nos modelos
+- Substituição dos use cases por services
 
-You can then execute your native executable with: `./target/todo-1.0-SNAPSHOT-runner`
+---
 
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
+## ✅ Testes
 
-## Provided Code
+Foram implementados **testes unitários** para:
 
-### REST
-
-Easily start your REST Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+- **UseCases** (regras de negócio)
+- **Resources** (endpoints)
+- **Repositories** (persistência)
