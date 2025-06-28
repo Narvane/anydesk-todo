@@ -3,7 +3,7 @@
 ## 🔧 How to Run
 
 ```bash
-git clone https://github.com/your-username/task-management-api.git
+git clone git@github.com:Narvane/task-management-api.git
 cd task-management-api
 mvn quarkus:dev
 ```
