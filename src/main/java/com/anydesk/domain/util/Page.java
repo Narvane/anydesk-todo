@@ -1,5 +1,7 @@
 package com.anydesk.domain.util;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -11,6 +13,11 @@ public record Page<T>(List<T> content, int page, int size, long totalElements) {
                 .map(mapper)
                 .collect(Collectors.toList());
         return new Page<>(mappedContent, page, size, totalElements);
+    }
+
+    @JsonIgnore
+    public boolean isEmpty() {
+        return content.isEmpty();
     }
 
 }
