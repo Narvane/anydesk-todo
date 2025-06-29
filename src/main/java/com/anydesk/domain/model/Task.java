@@ -66,4 +66,5 @@ public class Task {
     public void setStatus(TaskStatus status) {
         this.status = status;
     }
+
 }

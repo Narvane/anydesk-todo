@@ -1,6 +1,6 @@
 package com.anydesk.app.handler;
 
-import com.anydesk.app.vo.ErrorResponse;
+import com.anydesk.domain.util.ErrorResponse;
 import com.anydesk.domain.exception.TaskNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.core.Context;

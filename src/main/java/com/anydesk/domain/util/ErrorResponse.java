@@ -1,6 +1,4 @@
-package com.anydesk.app.vo;
-
-import com.anydesk.domain.util.Messages;
+package com.anydesk.domain.util;
 
 import java.util.List;
 import java.util.Locale;
