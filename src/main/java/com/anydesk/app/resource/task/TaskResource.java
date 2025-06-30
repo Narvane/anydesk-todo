@@ -1,4 +1,4 @@
-package com.anydesk.app.resource;
+package com.anydesk.app.resource.task;
 
 import com.anydesk.domain.usecase.task.*;
 import jakarta.annotation.security.RolesAllowed;
