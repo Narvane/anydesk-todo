@@ -54,4 +54,5 @@ Unit tests were implemented for:
 
 - **UseCases** (business logic)
 - **Resources** (endpoints)
+- **Requests** (bean validation)
 - **Repositories** (persistence layer)
