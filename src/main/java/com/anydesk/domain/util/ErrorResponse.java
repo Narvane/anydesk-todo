@@ -9,6 +9,7 @@ public class ErrorResponse {
 
     public ErrorResponse(String message, Locale locale, Object... params) {
         this.message = Messages.get(message, locale, params);
+        this.details = List.of();
     }
 
     public ErrorResponse(String message, List<String> details) {

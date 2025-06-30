@@ -28,6 +28,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ToggledTaskResponse'
+        '404':
+          description: Task not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskNotFoundErrorResponse'
 
   /tasks/completed:
     get:
@@ -109,6 +115,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TaskResponse'
+        '400':
+          description: Invalid request payload (validation error)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
 
   /tasks/{id}:
     put:
@@ -136,6 +148,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TaskResponse'
+        '400':
+          description: Invalid request payload (validation error)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrorResponse'
+        '404':
+          description: Task not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskNotFoundErrorResponse'
 
     delete:
       summary: Delete a task
@@ -152,6 +176,16 @@ paths:
       responses:
         '200':
           description: Task deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeletedTaskResponse'
+        '404':
+          description: Task not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskNotFoundErrorResponse'
 
 components:
   securitySchemes:
@@ -164,27 +198,33 @@ components:
       type: object
       required:
         - title
-        - description
       properties:
         title:
           type: string
           example: Check and respond to emails
+          maxLength: 255
         description:
           type: string
           example: Review incoming emails, prioritize messages, and reply or forward them as needed to ensure communication flows smoothly.
+          maxLength: 500
         status:
           type: string
           enum: [ TODO, COMPLETED ]
 
     UpdateTaskRequest:
       type: object
+      required:
+        - title
+        - status
       properties:
         title:
           type: string
           example: Check and respond to emails
+          maxLength: 255
         description:
           type: string
           example: Scan your inbox for new messages, filter by urgency, and take quick action — reply, delegate, or archive — to keep communication efficient and inbox under control.
+          maxLength: 500
         status:
           type: string
           enum: [ TODO, COMPLETED ]
@@ -205,6 +245,7 @@ components:
           type: integer
         title:
           type: string
+          example: Check and respond to emails
 
     TaskResponse:
       type: object
@@ -213,12 +254,13 @@ components:
           type: integer
         title:
           type: string
+          example: Check and respond to emails
         description:
           type: string
+          example: Scan your inbox for new messages, filter by urgency, and take quick action — reply, delegate, or archive — to keep communication efficient and inbox under control.
         status:
           type: string
           enum: [ TODO, COMPLETED ]
-
 
     TaskPageResponse:
       type: object
@@ -233,3 +275,27 @@ components:
           type: integer
         totalElements:
           type: integer
+
+    ValidationErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Validation error
+        details:
+          type: array
+          items:
+            type: string
+          example: [ "title: must not be blank", "status: must not be null" ]
+
+    TaskNotFoundErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Task with id 1 was not found
+        details:
+          type: array
+          items:
+            type: string
+          example: []
